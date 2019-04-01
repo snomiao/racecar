@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Varibles
+# this vertion should be same at master and slave machine.
 rosversion="kinetic" 
 #ubuntu 16
 
@@ -54,8 +55,6 @@ echo "Start to config for the project"
 #echo "Install the nlopt"
 #sudo apt install libnlopt* -y
 
-
-
 echo "Install the ROS package for art_racecar"
 sudo apt-get install ros-$rosversion-joy -y
 sudo apt-get install ros-$rosversion-move-base -y
@@ -67,14 +66,14 @@ sudo apt-get install ros-$rosversion-amcl -y
 sudo apt-get install ros-$rosversion-rviz-imu-plugin -y
 sudo apt-get install ros-$rosversion-dwa-local-planner -y
 
+# testing
 echo "Compile the art_racecar"
+source ~/.bashrc
 catkin_make -j8
 
-echo "configuring the serial udev of the car."
-cd src/art_racecar/udev
-sudo bash art_init.sh
+# failed
+# echo "configuring the serial udev of the car."
+# cd src/art_racecar/udev
+# sudo bash art_init.sh
 
 echo "--Installing Finished, please reboot the computer."
-
-
-
