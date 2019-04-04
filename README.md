@@ -14,14 +14,15 @@ sudo  bash art_init.sh
 sudo reboot  
 ```
 ## 建立地图
-先安装电脑用户名和主机名配置主从机  
+先安装电脑用户名和主机名配置主从机
 ### a) 运行车  
 `roslaunch art_racecar Run_car.launch`
 ### b) 3.3 运行gmapping  
 `roslaunch art_racecar Run_gmapping.launch`
 ### c) 3.4 运行键盘控制  
 `rosrun art_racecar racecar_teleop.py` 
-### d) 3.5 本地电脑打开rviz  
+### d) 3.5 本地电脑打开rviz
+
 ```
 source  工作空间  
 source art_racecar/art_rviz.sh  
@@ -49,9 +50,21 @@ c) 运行AMCL
 `roslaunch art_racecar amcl_nav.launch`
 d) .本地电脑打开rviz  
 本地电脑打开：  
-source  工作空间  
-source art_racecar/art_rviz.sh  
-`roslaunch art_racecar rviz.launch`
+
+
+从机识别主机，配置HOSTS
+```bash
+sudo cp /etc/hosts /etc/hosts.bak
+sudo cp /etc/hosts ~/hosts
+sudo chown --reference ~/.bashrc hosts
+sudo echo "192.168.5.101 sz-Default-string" >> ~/hosts
+sudo cp ~/hosts /etc/hosts 
+```
+
+source 工作空间  
+source art_racecar/art_rviz.sh
+roslaunch art_racecar rviz.launch
+
 e) 4.5 开始导航   
 在RVIZ中设定初始坐标，设定目标位置，开始导航  
 # *********************软件接口***********************  
@@ -70,7 +83,6 @@ e) 4.5 开始导航
 	
 
 
-											
-											# Steven Zhang
-											# 2019.01.30
-	
+
+	# Steven Zhang
+	# 2019.01.30
