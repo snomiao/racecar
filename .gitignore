@@ -1,3 +1,4 @@
 build/*
 devel/*
 .vscode/*
+src/art_racecar/map/*
