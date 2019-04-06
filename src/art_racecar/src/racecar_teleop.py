@@ -23,7 +23,7 @@ For Holonomic mode (strafing), hold down the shift key:
    M    <    >
 
 space key, k : force stop
-w/x: shift the middle pos of throttle by +/- 5 pwm
+w/x: shift the m>iddle pos of throttle by +/- 5 pwm
 a/d: shift the middle pos of steering by +/- 2 pwm
 CTRL-C to quit
 """
