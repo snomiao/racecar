@@ -1,39 +1,38 @@
 #!/bin/bash
 
+# run me by
+# bash <(wget -qO- https://raw.githubusercontent.com/snomiao/racecar/master/install.sh -O)
+
 # Varibles
 ip_controller="192.168.5.12"
 ip_master=`hostname -I`
-rosversion="kinetic"
-install_path="~"
+ 
+# 配置阿里云源
+# tools/startup_scripts/configure_aliyun_source.sh
+# 配置HOSTS环境
+# tools/startup_scripts/configure_hosts.sh
+# 配置代理
+# tools/startup_scripts/configure_proxy.sh
+# 安装基础软件包
+# sudo apt install git -y
+# sudo apt install openssh-server -y
 
-#ubuntu 16
-
-# ubuntu 18.04
-# rosversion="melodic"  # so many bugs
-# Install the ros
-
-# config proxy
-echo "proxy configuring"
-echo "
-export http_proxy="http://"$ip_controller":1080/"
-export https_proxy="http://"$ip_controller":1080/"
-">>~/.bashrc
-
-echo "install git"
-sudo apt install git -y
-
-echo "install sshd"
-sudo apt install openssh-server
-
-cd $install_path
-git clone https://github.com/snomiao/racecar
+# 下载 racecar
+# install_path="~"
+# cd $install_path
+# git clone https://github.com/snomiao/racecar
 
 if [ `id -u` == 0 ]; then
 echo "Don't running this use root(sudo)."
 exit 0
 fi
 
-# install ros
+
+# get version of ros
+ubuntu_release=`lsb_release -a|grep -P '(?<=^Release:)\s+.*' -o|tr -d '[:space:]'`
+rosversion=`echo $ubuntu_release | sed s/14.04/indigo/ | sed s/16.04/kinetic/ | sed s/18.04/melodic/`
+
+# Install ros
 echo "Start to install the ros, http://wiki.ros.org/$rosversion/Installation/Ubuntu"
 echo "Update the software list"
 sudo sh -c '. /etc/lsb-release && echo "deb http://mirrors.ustc.edu.cn/ros/ubuntu/ $DISTRIB_CODENAME main" > /etc/apt/sources.list.d/ros-latest.list'

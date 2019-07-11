@@ -7,7 +7,7 @@
     <include file="$(find art_racecar)/launch/includes/art_car_tf.launch.xml" />
 
     <!-- car model -->
-    <include file="$(find racecar_simulator)/launch/simulate.launch" />
+    <include file="$(find racecar_simulator)/launch/racecar_model.launch" />
 
     <!-- SENSOR DEVICE -->
     <include file="$(find art_racecar)/launch/ls01g_lidar.launch"/>
@@ -20,12 +20,11 @@
 
     <!-- kinect -->
     <!-- run depthimage_to_laserscan node -->
-    <!-- <include file="$(find freenect_launch)/launch/examples/freenect-xyz.launch" /> -->
-    <include file="$(find openni_launch)/launch/openni.launch" />
-    
+    <!-- <include file="$(find openni_launch)/launch/openni.launch" /> -->
+        <!-- <remap from="image" to="/camera/depth/image"/> -->
+    <!-- <include file="$(find freenect_launch)/launch/examples/freenect-xyz.launch" />
     <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="kinectimage_to_laserscan">
-        <remap from="image" to="/camera/depth/image"/>
-        <!-- <remap from="camera_info" to="/kinect/depth/camera_info"/> -->
+        <remap from="image" to="/kinect/depth/image_raw"/>
         <remap from="scan" to="/scan"/>
         <rosparam>
             scan_height: 10
@@ -34,7 +33,7 @@
             range_max: 5.0
             output_frame_id: kinect_link
         </rosparam>
-    </node>
+    </node> -->
 
     <include file="$(find art_racecar)/launch/Run_gmapping.launch"/>
     
