@@ -49,7 +49,7 @@ sudo apt-get install ros-$rosversion-desktop-full -y
 sudo rosdep init
 rosdep update
 
-if [ `lsb_release -a|grep flag{setup_ros_env}|wc -l` == 0 ]; then
+if [ `cat ~/.bashrc|grep flag{setup_ros_env}|wc -l` == 0 ]; then
     echo "Setup the ROS environment variables"
     echo "#flag{setup_ros_env}" >> ~/.bashrc
     echo -e "if [ -f /opt/ros/$rosversion/setup.bash ]; then\n\tsource /opt/ros/$rosversion/setup.bash\nfi" >> ~/.bashrc
@@ -57,12 +57,23 @@ if [ `lsb_release -a|grep flag{setup_ros_env}|wc -l` == 0 ]; then
 fi
 source ~/.bashrc
 
-echo "Install the rosinstall"
-sudo apt-get install python-rosinstall -y
+echo "Install ROS building tools"
+sudo apt install python-rosinstall python-rosinstall-generator python-wstool build-essential -y
+sudo apt install ros-kinetic-catkin -y
+
+echo "ROS installing Finished, please reboot the computer."
+
+# //
 
 # Install the dependecies for the project
 echo "Start to config for the project"
 
+echo "configuring the serial udev of the car."
+cd ~/racecar/src/art_racecar/udev/
+sudo bash art_init.sh
+
+cd ~/racecar/src/art_racecar/
+source art_rviz.sh
 #echo "Install the python dependecies"
 #sudo apt-get install python-numpy python-scipy python-matplotlib ipython ipython-notebook python-pandas python-sympy python-nose -y
 
@@ -72,7 +83,7 @@ echo "Start to config for the project"
 #echo "Install the nlopt"
 #sudo apt install libnlopt* -y
 
-echo "Install the ROS package for art_racecar"
+echo "Install the ROS packages for art_racecar"
 sudo apt-get install ros-$rosversion-joy -y
 sudo apt-get install ros-$rosversion-move-base -y
 sudo apt-get install ros-$rosversion-mrpt* -y
@@ -85,9 +96,3 @@ sudo apt-get install ros-$rosversion-dwa-local-planner -y
 
 echo "Compile the art_racecar"
 catkin_make -j8
-
-echo "configuring the serial udev of the car."
-sudo bash $install_path/racecar/src/art_racecar/udev/art_init.sh
-
-echo "--Installing Finished, please reboot the computer."
-
