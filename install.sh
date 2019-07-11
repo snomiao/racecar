@@ -8,23 +8,20 @@ ip_controller="192.168.5.12"
 ip_master=`hostname -I`
 
 # 配置阿里云源
-# tools/startup_scripts/configure_aliyun_source.sh
+bash <(wget -qO - https://raw.githubusercontent.com/snomiao/racecar/master/tools/startup_scripts/configure_aliyun_source.sh)
+
 # 配置HOSTS环境
-# tools/startup_scripts/configure_hosts.sh
-# 配置代理
-# tools/startup_scripts/configure_proxy.sh
+bash <(wget -qO - https://raw.githubusercontent.com/snomiao/racecar/master/tools/startup_scripts/configure_hosts.sh)
+
+# 配置代理（如果需要的话）
+# bash <(wget -qO - https://raw.githubusercontent.com/snomiao/racecar/master/tools/startup_scripts/configure_proxy.sh)
+
 # 安装基础软件包
-# sudo apt-get install git -y
-# sudo apt-get install openssh-server -y
-# sudo apt-get install ssh -y
-# sudo apt-get install ntpdate -y
-# sudo apt-get install chrony -y
-
-
-# 下载 racecar
-install_path="~"
-# cd $install_path
-# git clone https://github.com/snomiao/racecar
+sudo apt-get install git -y
+sudo apt-get install openssh-server -y
+sudo apt-get install ssh -y
+sudo apt-get install ntpdate -y
+sudo apt-get install chrony -y
 
 if [ `id -u` == 0 ]; then
 echo "Don't running this use root(sudo)."
@@ -65,6 +62,14 @@ echo "ROS installing Finished, please reboot the computer."
 
 # //
 
+# 下载安装 racecar 软件包
+install_path=`echo ~`
+cd $install_path
+if [ -e $install_path/ ]
+git clone https://github.com/snomiao/racecar
+
+
+
 # Install the dependecies for the project
 echo "Start to config for the project"
 
@@ -95,4 +100,6 @@ sudo apt-get install ros-$rosversion-rviz-imu-plugin -y
 sudo apt-get install ros-$rosversion-dwa-local-planner -y
 
 echo "Compile the art_racecar"
-catkin_make -j8
+catkin_make
+
+chmod 777 -R ~/racecar/tools/*.sh
