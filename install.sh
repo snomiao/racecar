@@ -6,7 +6,7 @@
 # Varibles
 ip_controller="192.168.5.12"
 ip_master=`hostname -I`
- 
+
 # 配置阿里云源
 # tools/startup_scripts/configure_aliyun_source.sh
 # 配置HOSTS环境
