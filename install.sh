@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # run me by
-# bash <(wget -qO- https://raw.githubusercontent.com/snomiao/racecar/master/install.sh -O)
+# bash <(wget -qO - https://raw.githubusercontent.com/snomiao/racecar/master/install.sh)
 
 # Varibles
 ip_controller="192.168.5.12"
@@ -14,11 +14,15 @@ ip_master=`hostname -I`
 # 配置代理
 # tools/startup_scripts/configure_proxy.sh
 # 安装基础软件包
-# sudo apt install git -y
-# sudo apt install openssh-server -y
+# sudo apt-get install git -y
+# sudo apt-get install openssh-server -y
+# sudo apt-get install ssh -y
+# sudo apt-get install ntpdate -y
+# sudo apt-get install chrony -y
+
 
 # 下载 racecar
-# install_path="~"
+install_path="~"
 # cd $install_path
 # git clone https://github.com/snomiao/racecar
 
@@ -26,7 +30,6 @@ if [ `id -u` == 0 ]; then
 echo "Don't running this use root(sudo)."
 exit 0
 fi
-
 
 # get version of ros
 ubuntu_release=`lsb_release -a|grep -P '(?<=^Release:)\s+.*' -o|tr -d '[:space:]'`
@@ -46,22 +49,16 @@ sudo apt-get install ros-$rosversion-desktop-full -y
 sudo rosdep init
 rosdep update
 
-echo "Setup the ROS environment variables"
-echo -e "if [ -f /opt/ros/$rosversion/setup.bash ]; then\n\tsource /opt/ros/$rosversion/setup.bash\nfi" >> ~/.bashrc
-echo "source $install_path/acecar/devel/setup.bash" >> ~/.bashrc
+if [ `lsb_release -a|grep flag{setup_ros_env}|wc -l` == 0 ]; then
+    echo "Setup the ROS environment variables"
+    echo "#flag{setup_ros_env}" >> ~/.bashrc
+    echo -e "if [ -f /opt/ros/$rosversion/setup.bash ]; then\n\tsource /opt/ros/$rosversion/setup.bash\nfi" >> ~/.bashrc
+    echo "source $install_path/racecar/devel/setup.bash" >> ~/.bashrc
+fi
 source ~/.bashrc
 
 echo "Install the rosinstall"
 sudo apt-get install python-rosinstall -y
-
-echo "Install the ssh"
-sudo apt-get install ssh -y
-
-echo "Install the ntpdate"
-sudo apt-get install ntpdate -y
-
-echo "Install the chrony"
-sudo apt-get install chrony -y
 
 # Install the dependecies for the project
 echo "Start to config for the project"
